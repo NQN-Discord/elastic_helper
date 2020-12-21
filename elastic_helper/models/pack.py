@@ -3,7 +3,7 @@ from typing import List, Dict, Union
 from .base_model import Model
 
 
-class Group(Model):
+class Pack(Model):
     index = "groups"
     initialise = {
         "settings": {

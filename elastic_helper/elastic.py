@@ -68,7 +68,7 @@ class _ElasticSearchDB:
         await self._client.transport.close()
 
     async def init_models(self):
-        for model in {GuildGroup, Group, ExtraEmote, Sticker, Logging, GuildMessage}:
+        for model in {GuildGroup, Pack, ExtraEmote, Sticker, Logging, GuildMessage}:
             if "*" in model.index:
                 await self._client.indices.put_index_template(model.index.replace("*", "_"), body={
                     "template": model.elastic_setup(),
