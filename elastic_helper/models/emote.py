@@ -59,6 +59,13 @@ def db_init(name):
     }
 
 
+def _warn(message):
+    try:
+        raise Exception(message)
+    except Exception:
+        log.warning(message, exc_info=True)
+
+
 class ExtraEmote(Model):
     index = "extra_emote"
     is_animated: bool
@@ -84,7 +91,7 @@ class ExtraEmote(Model):
 
     @property
     def name(self):
-        log.warning("ExtraEmote.name")
+        _warn("ExtraEmote.name")
         emote = self.emote
         if emote:
             return emote.name
@@ -92,7 +99,7 @@ class ExtraEmote(Model):
 
     @property
     def emote(self) -> Optional[Emoji]:
-        log.warning("ExtraEmote.emote")
+        _warn("ExtraEmote.emote")
         emoji_ = None
         for id in map(int, self.ids):
             emote = bot.bot.get_emoji(id)
