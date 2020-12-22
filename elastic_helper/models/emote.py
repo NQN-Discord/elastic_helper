@@ -84,6 +84,7 @@ class ExtraEmote(Model):
 
     @property
     def name(self):
+        log.warning("ExtraEmote.name")
         emote = self.emote
         if emote:
             return emote.name
@@ -91,6 +92,7 @@ class ExtraEmote(Model):
 
     @property
     def emote(self) -> Optional[Emoji]:
+        log.warning("ExtraEmote.emote")
         emoji_ = None
         for id in map(int, self.ids):
             emote = bot.bot.get_emoji(id)
