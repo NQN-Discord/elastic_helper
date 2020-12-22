@@ -94,7 +94,7 @@ class ExtraEmote(Model):
         emoji_ = None
         for id in map(int, self.ids):
             emote = bot.bot.get_emoji(id)
-            if emote.available:
+            if emote and emote.available:
                 if emote.name.startswith("emoji_"):
                     emoji_ = emote
                 else:
