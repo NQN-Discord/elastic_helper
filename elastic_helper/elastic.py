@@ -181,3 +181,8 @@ class _ElasticSearchDB:
                 _typecheck=False,
                 **i["_source"]
             )
+
+    async def unread_only(self):
+        await self._client.transport.perform_request(
+            "PUT", "*/_settings", body={"index.blocks.read_only_allow_delete": None}
+        )
