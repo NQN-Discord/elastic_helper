@@ -1,10 +1,10 @@
-from typing import Optional, List
+from typing import Optional, List, Callable
 from discord import Emoji
 from itertools import chain
 
 from .base_model import Model
-from discord_bot import bot
 from logging import getLogger
+import copy
 
 
 log = getLogger(__name__)
@@ -91,24 +91,15 @@ class ExtraEmote(Model):
 
     @property
     def name(self):
-        _warn("ExtraEmote.name")
-        emote = self.emote
-        if emote:
-            return emote.name
         return next(i for i in chain(self.names, [self.names[0][:32], self.names[0] + "__", "emoji"]) if 1 < len(i) <= 32 and not i.startswith("emoji_")).replace(" ", "")
 
-    @property
-    def emote(self) -> Optional[Emoji]:
-        _warn("ExtraEmote.emote")
-        emoji_ = None
+    def get_emote_from_ids(self, lookup: Callable[[int], Optional[Emoji]]) -> Optional[Emoji]:
         for id in map(int, self.ids):
-            emote = bot.bot.get_emoji(id)
+            emote = lookup(id)
             if emote and emote.available:
-                if emote.name.startswith("emoji_"):
-                    emoji_ = emote
-                else:
-                    return emote
-        return emoji_
+                rtn = copy.copy(emote)
+                rtn.name = self.name
+                return rtn
 
     @property
     def url(self) -> str:

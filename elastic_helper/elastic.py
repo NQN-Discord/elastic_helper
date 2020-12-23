@@ -111,7 +111,7 @@ class _ElasticSearchDB:
         ))["hits"]
         converted = []
         for i in results["hits"]:
-            converted.append(model(_id=i["_id"], _typecheck=False, **i["_source"]))
+            converted.append(model(_id=i["_id"], _typecheck=False, **{**i["_source"], **i.get("highlight", {})}))
         return results["total"]["value"], converted
 
     async def search_single(self, model: Type[Model], **kwargs) -> Optional[Model]:
