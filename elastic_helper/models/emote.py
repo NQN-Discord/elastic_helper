@@ -1,5 +1,5 @@
 from typing import Optional, List, Callable
-from discord import Emoji
+from discord import Emoji, PartialEmoji
 from itertools import chain
 
 from .base_model import Model
@@ -104,3 +104,11 @@ class ExtraEmote(Model):
     @property
     def url(self) -> str:
         return f"https://cdn.discordapp.com/emojis/{self.id}.{'gif' if self.is_animated else 'png'}"
+
+    def to_partial(self, lookup: Callable[[int], Optional[Emoji]]) -> PartialEmoji:
+        emoji = self.get_emote_from_ids(lookup)
+        return PartialEmoji(
+            name=self.name,
+            id=emoji.id if emoji else self.id,
+            animated=self.is_animated
+        )
