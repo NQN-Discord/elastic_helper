@@ -77,7 +77,28 @@ class ExtraEmote(Model):
 
     times_used: int
 
+    mappings = {
+      "properties": {
+        "filtered": {
+          "type": "boolean"
+        },
+        "ids": {
+          "type": "keyword"
+        },
+        "is_animated": {
+          "type": "boolean"
+        },
+        "shas": {
+          "type": "keyword",
+        },
+        "times_used": {
+          "type": "long"
+        }
+      }
+    }
+
     initialise = db_init("names")
+    initialise["mappings"].update(mappings)
 
     def __str__(self):
         a = "a" if self.is_animated else ""
