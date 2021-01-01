@@ -6,6 +6,11 @@ class Sticker(Model):
     index = "sticker"
     initialise = db_init("name")
 
-    name: str
+    prefix: str
+    suffix: str
     url: str
     owner_id: int
+
+    @property
+    def name(self):
+        return f"{self.prefix}.{self.suffix}"
