@@ -4,7 +4,8 @@ from .emote import db_init
 
 class Sticker(Model):
     index = "sticker"
-    initialise = db_init("name")
+    initialise = db_init("prefix", "suffix")
+    print(__import__("json").dumps(initialise))
 
     prefix: str
     suffix: str

@@ -10,7 +10,7 @@ import copy
 log = getLogger(__name__)
 
 
-def db_init(name):
+def db_init(*names):
     return {
         "settings": {
             "analysis": {
@@ -34,7 +34,7 @@ def db_init(name):
                 },
                 "filter": {
                     "word_ngram_filter": {
-                        "type": "ngram",
+                        "type": "edge_ngram",
                         "min_gram": 2,
                         "max_gram": 10,
                         "token_chars": []
@@ -53,7 +53,7 @@ def db_init(name):
                             "type": "keyword"
                         }
                     }
-                }
+                } for name in names
             }
         }
     }
