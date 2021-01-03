@@ -1,4 +1,12 @@
-from typing import GenericMeta, Type, Dict, List, Set
+try:
+    from typing import GenericMeta
+except ImportError:
+    from typing import _GenericAlias
+    py37 = True
+else:
+    py37 = False
+
+from typing import Type, Dict, List, Set
 from uuid import uuid4
 
 from oauth_helper.get_params import typecheck_class, is_namedtuple, typecheck_single

@@ -59,13 +59,6 @@ def db_init(*names):
     }
 
 
-def _warn(message):
-    try:
-        raise Exception(message)
-    except Exception:
-        log.warning(message, exc_info=True)
-
-
 class ExtraEmote(Model):
     index = "extra_emote"
     is_animated: bool
