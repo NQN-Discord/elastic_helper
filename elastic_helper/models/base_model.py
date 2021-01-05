@@ -45,11 +45,19 @@ class Model:
         t = self.__annotations__[item]
         if is_namedtuple(t):
             return t(**self._attrs[item])
-        if isinstance(t, GenericMeta):
-            if t.__origin__ is List:
-                of, = t.__args__
-                if is_namedtuple(of):
-                    return [of(**i) for i in self._attrs[item]]
+
+        if not py37:
+            if isinstance(t, GenericMeta):
+                if t.__origin__ is List:
+                    of, = t.__args__
+                    if is_namedtuple(of):
+                        return [of(**i) for i in self._attrs[item]]
+        else:
+            if isinstance(t, _GenericAlias):
+                if t._name == "List":
+                    of, = t.__args__
+                    if is_namedtuple(of):
+                        return [of(**i) for i in self._attrs[item]]
         return self._attrs.get(item)
 
     def __hash__(self):
