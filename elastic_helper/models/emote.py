@@ -107,22 +107,6 @@ class ExtraEmote(Model):
     def name(self):
         return next(i for i in chain(self.names, [self.names[0][:32], self.names[0] + "__", "emoji"]) if 1 < len(i) <= 32 and not i.startswith("emoji_")).replace(" ", "")
 
-    def get_emote_from_ids(self, lookup: Callable[[int], Optional[Emoji]]) -> Optional[Emoji]:
-        for id in map(int, self.ids):
-            emote = lookup(id)
-            if emote and emote.available:
-                rtn = copy.copy(emote)
-                rtn.name = self.name
-                return rtn
-
     @property
     def url(self) -> str:
         return f"https://cdn.discordapp.com/emojis/{self.id}.{'gif' if self.is_animated else 'png'}"
-
-    def to_partial(self, lookup: Callable[[int], Optional[Emoji]]) -> PartialEmoji:
-        emoji = self.get_emote_from_ids(lookup)
-        return PartialEmoji(
-            name=self.name,
-            id=emoji.id if emoji else self.id,
-            animated=self.is_animated
-        )
