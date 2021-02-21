@@ -110,3 +110,10 @@ class ExtraEmote(Model):
     @property
     def url(self) -> str:
         return f"https://cdn.discordapp.com/emojis/{self.id}.{'gif' if self.is_animated else 'png'}"
+
+    def to_partial(self) -> PartialEmoji:
+        return PartialEmoji(
+            name=self.name,
+            id=self.id,
+            animated=self.is_animated
+        )
