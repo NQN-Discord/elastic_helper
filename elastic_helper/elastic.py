@@ -117,6 +117,13 @@ class _ElasticSearchDB:
             }))
         return results["total"]["value"], converted
 
+    async def count(self, model: Type[Model]) -> int:
+        index = model.index
+        results: Dict[str, Any] = (await self._client.count(
+            index=index,
+        ))
+        return results["count"]
+
     async def search_single(self, model: Type[Model], **kwargs) -> Optional[Model]:
         no_results, models = await self.search(model, no_results=1, **kwargs)
         if no_results == 0:
