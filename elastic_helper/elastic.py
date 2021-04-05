@@ -91,7 +91,7 @@ class _ElasticSearchDB:
         log.info("Bulk getting %s %s models", len(ids), model.__name__)
         get_request.labels(model=model.__name__).inc(len(ids))
         models = (await self._client.mget(index=model.index, body={"ids": ids}))["docs"]
-        return [model(_id=i["_id"], _typecheck=False, **i["_source"]) for i in models]
+        return [model(_id=i["_id"], _typecheck=False, **i["_source"]) for i in models if i["found"]]
 
     async def search(self, model: Type[Model], no_results: int, offset: int = 0, query_type="match", query=None, sort=None, **kwargs):
         log.info("Searching for %s models", model.__name__)
