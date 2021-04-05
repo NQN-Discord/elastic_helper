@@ -67,8 +67,6 @@ class ExtraEmote(Model):
     names: List[str]
     filtered: bool
 
-    times_used: int
-
     mapping_properties = {
         "filtered": {
             "type": "boolean"
@@ -78,9 +76,6 @@ class ExtraEmote(Model):
         },
         "is_animated": {
             "type": "boolean"
-        },
-        "times_used": {
-            "type": "long"
         }
     }
 
