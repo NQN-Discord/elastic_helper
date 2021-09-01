@@ -78,7 +78,6 @@ class _ElasticSearchDB:
                 await self._client.indices.create(model.index, body=model.elastic_setup())
 
     async def get(self, model: Type[Model], id: str) -> Optional[Model]:
-        log.info("Getting a %s model", model.__name__)
         get_request.labels(model=model.__name__).inc()
         index = model.index
         try:
@@ -88,13 +87,11 @@ class _ElasticSearchDB:
         return model(_id=i["_id"], _typecheck=False, **i["_source"])
 
     async def bulk_get(self, model: Type[Model], ids: List[str]) -> List[Model]:
-        log.info("Bulk getting %s %s models", len(ids), model.__name__)
         get_request.labels(model=model.__name__).inc(len(ids))
         models = (await self._client.mget(index=model.index, body={"ids": ids}))["docs"]
         return [model(_id=i["_id"], _typecheck=False, **i["_source"]) for i in models if i["found"]]
 
     async def search(self, model: Type[Model], no_results: int, offset: int = 0, query_type="match", query=None, sort=None, **kwargs):
-        log.info("Searching for %s models", model.__name__)
         search_request.labels(model=model.__name__).inc()
         index = model.index
         if query is None:
@@ -157,7 +154,6 @@ class _ElasticSearchDB:
     async def bulk_add(self, models: List[Model], chunk_size: int = 10000, op_type: str = "create") -> NoReturn:
         if len(models) == 0:
             return
-        log.info("Adding %s models", len(models))
         patch_request.labels(op_type=op_type).inc(len(models))
         await self.bulk_add_serialised(
             (self.bulk_serialise(model, op_type) for model in models),
