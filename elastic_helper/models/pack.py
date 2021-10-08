@@ -29,7 +29,10 @@ class Pack(Model):
                     "search_analyzer": "camel"
                 },
                 "member_count": {
-                    "type": int
+                    "type": "integer"
+                },
+                "public": {
+                    "type": "boolean"
                 }
             }
         }
