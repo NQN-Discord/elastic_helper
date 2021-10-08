@@ -27,6 +27,9 @@ class Pack(Model):
                     "type": "text",
                     "analyzer": "camel",
                     "search_analyzer": "camel"
+                },
+                "member_count": {
+                    "type": int
                 }
             }
         }
@@ -35,6 +38,7 @@ class Pack(Model):
     name: str
     public: bool
     emote_names: List[str]
+    member_count: int
 
 
 class GuildGroup(Model):
