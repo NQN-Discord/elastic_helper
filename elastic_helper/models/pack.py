@@ -4,7 +4,7 @@ from .base_model import Model
 
 
 class Pack(Model):
-    index = "groups"
+    index = "packs"
     initialise = {
         "settings": {
             "analysis": {
