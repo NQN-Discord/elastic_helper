@@ -14,4 +14,3 @@ class User(Model):
     commands_ran: Optional[int]
 
     last_request: Optional[datetime]
-
