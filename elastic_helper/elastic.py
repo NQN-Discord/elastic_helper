@@ -187,6 +187,10 @@ class _ElasticSearchDB:
                 _typecheck=False,
                 **i["_source"]
             )
+            
+    async def all_ids(self, model: Type[Model]):
+        async for i in async_scan(self._client, index=model.index, stored_fields=[]):
+            yield i["_id"]
 
     async def unread_only(self):
         await self._client.transport.perform_request(
