@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import List, Dict, NoReturn, Any, Type, Optional, Generator
 from logging import getLogger
 from prometheus_client import Counter
@@ -37,7 +39,7 @@ class ElasticSearchClient:
         self._alive = 0
         self._has_waited = False
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> _ElasticSearchDB:
         if self._alive == 0:
             _db = _ElasticSearchDB(self.hosts)
             if not self._has_waited:

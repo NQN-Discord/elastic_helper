@@ -22,7 +22,7 @@ class Model:
         if _id is None:
             _id = uuid4().hex
         if _typecheck:
-            typecheck_class(kwargs, self.__annotations__)
+            typecheck_class(kwargs, self.__class__.__annotations__)
         self._attrs = kwargs
         self._attrs["_id"] = _id
 
@@ -30,19 +30,19 @@ class Model:
         return f"{self.__class__.__name__}({self._attrs})"
 
     def __setattr__(self, key, value):
-        if key not in self.__annotations__:
-            return super(Model, self).__setattr__(key, value)
-        typecheck_single(value, self.__annotations__[key], False)
+        if key not in self.__class__.__annotations__:
+            return super().__setattr__(key, value)
+        typecheck_single(value, self.__class__.__annotations__[key], False)
         self._attrs[key] = value
 
     def __getattr__(self, item):
         if item.startswith("__"):
-            return super(Model, self).__getattr__(item)
+            return super().__getattr__(item)
         elif item == "_id":
             return self._attrs["_id"]
-        elif item not in self.__annotations__:
-            return super(Model, self).__getattribute__(item)
-        t = self.__annotations__[item]
+        elif item not in self.__class__.__annotations__:
+            return super().__getattribute__(item)
+        t = self.__class__.__annotations__[item]
         if is_namedtuple(t):
             return t(**self._attrs[item])
 
