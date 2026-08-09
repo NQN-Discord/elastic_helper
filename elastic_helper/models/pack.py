@@ -1,4 +1,4 @@
-from typing import List, Dict, Union
+from typing import List
 
 from .base_model import Model
 
@@ -42,11 +42,3 @@ class Pack(Model):
     public: bool
     emote_names: List[str]
     member_count: int
-
-
-class GuildGroup(Model):
-    index = "guild_groups"
-
-    max_emotes: int
-    emotes: List[Dict[str, Union[str, int]]]
-    packs: List[str]

@@ -1,10 +1,9 @@
-from typing import Optional, List, Callable
-from discord import Emoji, PartialEmoji
+from typing import List
+from discord import PartialEmoji
 from itertools import chain
 
 from .base_model import Model
 from logging import getLogger
-import copy
 
 
 log = getLogger(__name__)

@@ -70,20 +70,20 @@ class _ElasticSearchDB:
         await self._client.transport.close()
 
     async def init_models(self):
-        for model in {GuildGroup, Pack, ExtraEmote, Sticker, Logging}:
+        for model in {Pack, ExtraEmote, Sticker}:
             if "*" in model.index:
-                await self._client.indices.put_index_template(model.index.replace("*", "_"), body={
+                await self._client.indices.put_index_template(name=model.index.replace("*", "_"), body={
                     "template": model.elastic_setup(),
                     "index_patterns": model.index
                 })
             elif not await self._client.indices.exists(index=model.index):
-                await self._client.indices.create(model.index, body=model.elastic_setup())
+                await self._client.indices.create(index=model.index, body=model.elastic_setup())
 
     async def get(self, model: Type[Model], id: str) -> Optional[Model]:
         get_request.labels(model=model.__name__).inc()
         index = model.index
         try:
-            i = await self._client.get(index, id)
+            i = await self._client.get(index=index, id=id)
         except NotFoundError:
             return None
         return model(_id=i["_id"], _typecheck=False, **i["_source"])
@@ -126,7 +126,7 @@ class _ElasticSearchDB:
     async def search_single(self, model: Type[Model], **kwargs) -> Optional[Model]:
         no_results, models = await self.search(model, no_results=1, **kwargs)
         if no_results == 0:
-            return
+            return None
         return models[0]
 
     def _add_elastic(self, serialised, model: Model, op_type: str):
