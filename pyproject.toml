@@ -1,0 +1,10 @@
+[project]
+name = "elastic_helper"
+version = "0.2.0"
+description = "A helper for Elasticsearch operations used for NQN"
+requires-python = ">=3.14"
+dependencies = [
+    "elasticsearch[async]==8.19.3",
+    "oauth_helper@git+https://github.com/NQN-Discord/oauth_helper.git@0462bb1471a2259ccd0112b2391605d83f5eda92",
+    "prometheus_async[aiohttp]",
+]

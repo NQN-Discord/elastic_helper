@@ -1,3 +1,0 @@
-elasticsearch[async]==8.19.3
-git+git://github.com/NQN-Discord/oauth_helper.git@a266e8de473ba6b851ede23dbd5f520461df74a6
-prometheus_async[aiohttp]
