@@ -64,7 +64,8 @@ class _ElasticSearchDB:
         return await self._client.info()
 
     async def get_stats(self):
-        return await self._client.transport.perform_request("GET", "/_nodes/stats")
+        stats = await self._client.transport.perform_request("GET", "/_nodes/stats")
+        return stats.body
 
     async def close(self):
         await self._client.transport.close()
